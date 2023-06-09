@@ -10,12 +10,13 @@ const users = [
 
 
 router.get("/users", (req, res) => {
-    res.send(JSON.stringify(users))
+
+    res.send(users)
 });
-router.post("/users ", (req, res) => {
+router.post("/users", (req, res) => {
     const user = req.body;
     users.push(user);
-    res.send(user)
+    res.send(users)
 });
 
 

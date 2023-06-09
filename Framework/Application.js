@@ -21,18 +21,20 @@ module.exports = class Application {
         return http.createServer((req, res) => {
             let body = "";
             req.on("data", (chunk) => {
-                body += chunk
-            })
+                body += chunk;
+            });
             req.on("end", () => {
                 if(body){
                     req.body = JSON.parse(body)
-                }
-                const emitted = this.emitter.emit(this._getRouteMask(req.url, req.method), req, res)
+                };
+                const emitted = this.emitter.emit(this._getRouteMask(req.url, req.method), req, res);
+                
                 if (!emitted) {
                     res.end()
                 }
             })
-            
+            req.on("error", (e) => console.log(e))
+              
         })
     }
 
@@ -44,8 +46,8 @@ module.exports = class Application {
         Object.keys(router.endpoints).forEach(path => {
             const endpoint = router.endpoints[path];
             Object.keys(endpoint).forEach( method => {
+                const handler = endpoint[method];
                 this.emitter.on(this._getRouteMask(path, method), (req, res) => {
-                    const handler = endpoint[method];
                     this.middlewares.forEach(middleware => middleware(req, res));
                     handler(req, res)
                 })
