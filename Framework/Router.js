@@ -26,7 +26,6 @@ module.exports = class Router {
     }
     post(path, handler) {
         this.request("POST", path, handler);
-        console.log(this.endpoints)
     }
     put(path, handler) {
         this.request("PUT", path, handler)
